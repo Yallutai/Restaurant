@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taste Haven Restaurant Menu</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #fff8f0;
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      background-color: #8b0000;
+      color: #fff;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      background-color: #f4e1d2;
+      padding: 0.5rem;
+      text-align: center;
+    }
+    nav a {
+      margin: 0 1rem;
+      text-decoration: none;
+      color: #8b0000;
+      font-weight: bold;
+    }
+    main {
+      padding: 1rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+    h2 {
+      border-bottom: 2px solid #8b0000;
+      padding-bottom: 0.3rem;
+      margin-bottom: 1rem;
+    }
+    .menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fff;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .menu-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-right: 10px;
+    }
+    .menu-info {
+      flex-grow: 1;
+    }
+    .price {
+      color: #8b0000;
+      font-weight: bold;
+    }
+    button {
+      background: #8b0000;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      margin: 2px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #a52a2a;
+    }
+
+    /* 🌟 Special Menu Styling */
+    #special {
+      background-color: #fff8e1;
+      border: 2px solid #d4a017;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 900px;
+      box-shadow: 0 0 15px rgba(212, 160, 23, 0.3);
+    }
+    #special h2 {
+      color: #b8860b;
+      text-align: center;
+      border: none;
+      font-size: 1.8em;
+    }
+    .special-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+    .special-card img {
+      width: 120px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-right: 15px;
+    }
+    .badge {
+      background-color: #ffd700;
+      color: #000;
+      font-size: 0.8em;
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-left: 8px;
+    }
+
+    #cart {
+      background: #ffe4b5;
+      border: 2px solid #8b0000;
+      padding: 1rem;
+      border-radius: 10px;
+      margin-top: 2rem;
+    }
+    #cart ul {
+      list-style: none;
+      padding: 0;
+    }
+    #cart li {
+      margin: 8px 0;
+      background: #fff;
+      padding: 5px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #place-order {
+      background: green;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      padding-top: 100px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+    .modal-content {
+      background-color: #fff;
+      margin: auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 50%;
+      text-align: center;
+      position: relative;
+    }
+    .modal-content img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      margin-bottom: 15px;
+      border-radius: 10px;
+    }
+    .close {
+      color: red;
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    #order-form {
+      margin-top: 15px;
+      display: none;
+    }
+    #order-form input,
+    #order-form textarea {
+      display: block;
+      width: 95%;
+      margin: 8px 0;
+      padding: 8px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    footer {
+      background-color: #8b0000;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Taste Haven Restaurant</h1>
+    <p>Authentic Indian Cuisine</p>
+  </header>
+
+  <!-- 🌟 Special Menu of the Day -->
+  <section id="special">
+    <h2>🌟 Special Menu of the Day 🌟</h2>
+    <div class="special-card" id="special-card"></div>
+  </section>
+
+  <nav>
+    <a href="#starters">Starters</a>
+    <a href="#main-course">Main Course</a>
+    <a href="#desserts">Desserts</a>
+    <a href="#beverages">Beverages</a>
+    <a href="#streetfood">Street Food</a>
+  </nav>
+
+  <main>
+    <section id="starters">
+      <h2>Starters</h2>
+      <div class="menu-item">
+        <img src="puri.jpg" alt="Pani Puri" />
+        <div class="menu-info">
+          <h3>Pani Puri</h3>
+          <p>Crispy hollow puris filled with spicy, tangy water and mashed potato.</p>
+          <span class="price">₹60</span>
+        </div>
+        <div>
+          <button onclick="viewItem('Pani Puri','Crispy hollow puris filled with spicy, tangy water and mashed potato.',60,'puri.jpg')">View</button>
+          <button onclick="addToCart('Pani Puri',60)">Add</button>
+        </div>
+      </div>
+	  <div class="menu-item">
+        <img src="samosa.jpg" alt="Samosa">
+        <div class="menu-info">
+          <h3>Samosa</h3>
+          <p>Crispy fried pastry with spiced potatoes & peas.</p>
+          <span class="price">₹120</span>
+        </div>
+        <button onclick="viewItem('Samosa','Crispy fried pastry with spiced potatoes & peas.',120,'samosa.jpg')">View</button>
+        <button onclick="addToCart('Samosa',120)">Add</button>
+      </div>
+      <div class="menu-item">
+        <img src="pakora.jpg" alt="Pakora">
+        <div class="menu-info">
+          <h3>Pakora</h3>
+          <p>Deep fried fritters made with onions & gram flour.</p>
+          <span class="price">₹150</span>
+        </div>
+        <button onclick="viewItem('Pakora','Deep fried fritters made with onions & gram flour.',150,'pakora.jpg')">View</button>
+        <button onclick="addToCart('Pakora',150)">Add</button>
+      </div>
+    </section>
+
+    <section id="main-course">
+      <h2>Main Course</h2>
+      <div class="menu-item">
+        <img src="butter.jpg" alt="Butter Chicken" />
+        <div class="menu-info">
+          <h3>Butter Chicken</h3>
+          <p>Rich, creamy, and flavorful North Indian delicacy.</p>
+          <span class="price">₹250</span>
+        </div>
+        <div>
+          
+		  <button onclick="viewItem('Butter Chicken','Creamy tomato-based curry with tender chicken pieces.',250,'butter.jpg')">View</button>
+          <button onclick="addToCart('Butter Chicken',250)">Add</button>
+        </div>
+      </div>
+      <div class="menu-item">
+        <img src="biryani.jpg" alt="Hyderabadi Biryani" />
+        <div class="menu-info">
+          <h3>Hyderabadi Biryani</h3>
+          <p>Fragrant rice dish with aromatic spices and marinated chicken.</p>
+          <span class="price">₹220</span>
+        </div>
+        <div>
+          <button onclick="viewItem('Hyderabadi Biryani','Fragrant rice dish with aromatic spices and marinated chicken.',220,'biryani.jpg')">View</button>
+          <button onclick="addToCart('Hyderabadi Biryani',220)">Add</button>
+        </div>
+      </div>
+	   <div class="menu-item">
+        <img src="paneer.jpg" alt="Paneer Butter Masala">
+        <div class="menu-info">
+          <h3>Paneer Butter Masala</h3>
+          <p>Cottage cheese cubes in creamy tomato gravy.</p>
+          <span class="price">₹280</span>
+        </div>
+        <button onclick="viewItem('Paneer Butter Masala','Cottage cheese cubes in creamy tomato gravy.',280,'paneer.jpg')">View</button>
+        <button onclick="addToCart('Paneer Butter Masala',280)">Add</button>
+      </div>
+    </section>
+
+    <section id="desserts">
+      <h2>Desserts</h2>
+      <div class="menu-item">
+        <img src="jamun.jpg" alt="Gulab Jamun" />
+        <div class="menu-info">
+          <h3>Gulab Jamun</h3>
+          <p>Soft milk dumplings soaked in sugar syrup.</p>
+          <span class="price">₹100</span>
+        </div>
+        <div>
+          <button onclick="viewItem('Gulab Jamun','Soft milk dumplings soaked in sugar syrup.',100,'jamun.jpg')">View</button>
+          <button onclick="addToCart('Gulab Jamun',100)">Add</button>
+        </div>
+      </div>
+	  <div class="menu-item">
+          <img src="mango.jpg" alt="Mango Kulfi">
+		  <div class="menu-info">
+          
+            <h3>Mango Kulfi</h3>
+			<p>Traditional Indian ice cream made with mango pulp and milk</p>
+            <span class="price">₹180</span>
+			</div>
+			<div>
+            <button onclick="viewItem('Mango Kulfi','Traditional Indian ice cream made with mango pulp and milk.',180,'mango.jpg')">View</button>
+            <button onclick="addToCart('Mango Kulfi',180)">Add to Cart</button>
+          </div>
+		  </div>
+    </section>
+
+    <section id="beverages">
+      <h2>Beverages</h2>
+      <div class="menu-item">
+        <img src="chai.jpg" alt="Masala Chai" />
+        <div class="menu-info">
+          <h3>Masala Chai</h3>
+          <p>Hot Indian tea with spices and milk.</p>
+          <span class="price">₹40</span>
+        </div>
+        <div>
+          <button onclick="viewItem('Masala Chai','Hot Indian tea with spices and milk.',40,'chai.jpg')">View</button>
+          <button onclick="addToCart('Masala Chai',40)">Add</button>
+        </div>
+      </div>
+	   <div class="menu-item">
+        <img src="lassi.jpg" alt="Lassi">
+        <div class="menu-info">
+          <h3>Lassi</h3>
+          <p>Refreshing Punjabi yogurt drink.</p>
+          <span class="price">₹90</span>
+        </div>
+        <button onclick="viewItem('Lassi','Refreshing Punjabi yogurt drink.',90,'lassi.jpg')">View</button>
+        <button onclick="addToCart('Lassi',90)">Add</button>
+      </div>
+    </section>
+	
+
+    <section id="streetfood">
+      <h2>Street Food</h2>
+      <div class="menu-item">
+        <img src="pav.jpg" alt="Vada Pav" />
+        <div class="menu-info">
+          <h3>Vada Pav</h3>
+          <p>Famous Mumbai street snack – spicy potato fritter in a bun.</p>
+          <span class="price">₹50</span>
+        </div>
+        <div>
+          <button onclick="viewItem('Vada Pav','Famous Mumbai street snack – spicy potato fritter in a bun.',50,'pav.jpg')">View</button>
+          <button onclick="addToCart('Vada Pav',50)">Add</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="cart">
+      <h2>Your Cart</h2>
+      <ul id="cart-items"></ul>
+      <p><strong>Total: ₹<span id="cart-total">0</span></strong></p>
+      <button id="place-order" onclick="showOrderForm()">Place Order</button>
+      <div id="order-form">
+        <input type="text" placeholder="Your Name" />
+        <input type="text" placeholder="Phone Number" />
+        <textarea placeholder="Delivery Address"></textarea>
+        <button onclick="submitOrder()">Confirm Order</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Taste Haven Restaurant | Authentic Indian Flavors</p>
+  </footer>
+
+  <!-- Modal -->
+  <div id="itemModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <img id="modal-img" src="" alt="Dish Image" />
+      <h2 id="modal-title"></h2>
+      <p id="modal-description"></p>
+      <p><strong>Price: ₹<span id="modal-price"></span></strong></p>
+    </div>
+  </div>
+
+  <script>
+    let cart = [];
+
+    function addToCart(name, price) {
+      const existing = cart.find((item) => item.name === name);
+      if (existing) existing.qty++;
+      else cart.push({ name, price, qty: 1 });
+      renderCart();
+    }
+
+    function renderCart() {
+      const cartItems = document.getElementById("cart-items");
+      const cartTotal = document.getElementById("cart-total");
+      cartItems.innerHTML = "";
+      let total = 0;
+      cart.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          ${item.name} - ₹${item.price} × ${item.qty} = ₹${item.price * item.qty}
+          <span>
+            <button onclick="increaseQty(${index})">+</button>
+            <button onclick="decreaseQty(${index})">-</button>
+            <button onclick="removeFromCart(${index})">Remove</button>
+          </span>
+        `;
+        cartItems.appendChild(li);
+        total += item.price * item.qty;
+      });
+      cartTotal.textContent = total;
+    }
+
+    function increaseQty(i) {
+      cart[i].qty++;
+      renderCart();
+    }
+    function decreaseQty(i) {
+      if (cart[i].qty > 1) cart[i].qty--;
+      else cart.splice(i, 1);
+      renderCart();
+    }
+    function removeFromCart(i) {
+      cart.splice(i, 1);
+      renderCart();
+    }
+
+    function viewItem(name, desc, price, img) {
+      document.getElementById("modal-title").textContent = name;
+      document.getElementById("modal-description").textContent = desc;
+      document.getElementById("modal-price").textContent = price;
+      document.getElementById("modal-img").src = img;
+      document.getElementById("itemModal").style.display = "block";
+    }
+    function closeModal() {
+      document.getElementById("itemModal").style.display = "none";
+    }
+    window.onclick = (e) => {
+      if (e.target == document.getElementById("itemModal")) closeModal();
+    };
+
+    function showOrderForm() {
+      document.getElementById("order-form").style.display = "block";
+    }
+
+    function submitOrder() {
+      alert("✅ Order placed successfully! Thank you for dining with us.");
+      cart = [];
+      renderCart();
+      document.getElementById("order-form").style.display = "none";
+    }
+
+    // 🌟 Dynamic Special Menu of the Day
+    const specials = [
+      { name: "Paneer Butter Masala", price: 220, desc: "Creamy cottage cheese curry cooked with tomato gravy.", img: "paneer.jpg" },
+      { name: "Chicken Biryani", price: 240, desc: "Spicy and aromatic rice cooked with marinated chicken.", img: "Biryani.jpg" },
+      { name: "Masala Dosa", price: 120, desc: "South Indian crispy crepe filled with spiced potato.", img: "Dosa.jpg" },
+      { name: "Rajma Chawal", price: 150, desc: "Kidney beans curry served with steamed rice.", img: "Chawal.jpg" },
+      { name: "Pav Bhaji", price: 100, desc: "Spicy mashed vegetable curry served with buttered pav.", img: "pavbhaji.jpg" },
+      { name: "Chole Bhature", price: 160, desc: "Spicy chickpeas with deep-fried bread.", img: "chole.jpg" },
+      { name: "Dal Makhani", price: 180, desc: "Slow-cooked black lentils in creamy sauce.", img: "Makhni.jpg" },
+    ];
+
+    const today = new Date().getDay(); // 0-6 (Sun-Sat)
+    const special = specials[today];
+    const card = document.getElementById("special-card");
+    card.innerHTML = `
+      <img src="${special.img}" alt="${special.name}">
+      <div class="menu-info">
+        <h3>${special.name} <span class="badge">Chef’s Pick</span></h3>
+        <p>${special.desc}</p>
+        <span class="price">₹${special.price}</span>
+      </div>
+      <div>
+        <button onclick="viewItem('${special.name}','${special.desc}',${special.price},'${special.img}')">View</button>
+        <button onclick="addToCart('${special.name}',${special.price})">Add</button>
+      </div>
+    `;
+  </script>
+</body>
+</html>
